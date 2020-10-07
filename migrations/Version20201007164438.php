@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20201007164438 extends AbstractMigration
 {
     public function getDescription() : string
@@ -19,13 +17,22 @@ final class Version20201007164438 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE book (id INT AUTO_INCREMENT NOT NULL, isbn VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $book = $schema->createTable('book');
+        $book->addColumn('id', Types::INTEGER)
+            ->setAutoincrement(true)
+        ;
+        $book->addColumn('isbn', Types::STRING)
+            ->setLength(255)
+        ;
+        $book->addColumn('title', Types::STRING)
+            ->setLength(255)
+        ;
+
+        $book->setPrimaryKey(['id']);
     }
 
     public function down(Schema $schema) : void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE book');
+        $schema->dropTable('book');
     }
 }
